@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./img/stopwatch.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;1,500&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="timeContainer">
+            <div class="timeBox">
+                <div id="hoursBox">00</div>
+                <p>h</p>
+            </div>
+            <div class="timeBox">
+                <div id="minutesBox">00</div>
+                <p>m</p>
+            </div>
+            <div class="timeBox">
+                <div id="secondsBox">00</div>
+                <p>s</p>
+            </div>
+            <div class="timeBox">
+                <div id="milisecondsBox">00</div>
+                <p>ms</p>
+            </div>
+        </div>
+        <div class="buttonsContainer">
+            <button class="timerBtn" id="disabledBtn">
+                <p>Start</p>
+            </button>
+            <button class="timerBtn" id="startButton">
+                <p>Start</p>
+            </button>
+            <button class="timerBtn" id="clearButton">
+                <p>Pause</p>
+            </button>
+            <button class="timerBtn" id="RestartButton">
+                <p>Restart</p>
+            </button>
+        </div>
+    </div>
+    <script>
+        let miliseconds = prompt('Enter miliseconds (max-99)');
+        let seconds = prompt('Enter seconds (max-59)');
+        let minutes = prompt('Enter minutes (max-59)');
+        let hours = prompt('Enter hours (max-24)');
+        let timerEnd = new Audio('./img/TaimerEnd.mp3');
+        timerEnd.loop = true;
+        timerEnd.volume = 0.4;
+        if (miliseconds == null || miliseconds == '') {
+            miliseconds = 0;
+        }
+        if (seconds == null || seconds == '') {
+            seconds = 0;
+        }
+        if (minutes == null || minutes == '') {
+            minutes = 0;
+        }
+        if (hours == null || hours == '') {
+            hours = 0;
+        }
+        if (miliseconds.length >= 3) {
+            miliseconds = 0;
+        }
+        if (seconds.length >= 3) {
+            seconds = 0;
+        }
+        if (minutes.length >= 3) {
+            minutes = 0;
+        }
+        if (hours.length >= 3) {
+            hours = 0;
+        }
+        if (miliseconds > 99) {
+            miliseconds = '0';
+        }
+        if (seconds > 59) {
+            seconds = '0';
+        }
+        if (minutes > 59) {
+            minutes = '0';
+        }
+        if (hours > 24) {
+            hours = '0';
+        }
+        if (miliseconds < 10) {
+            milisecondsBox.innerText = '0' + miliseconds;
+        }
+        if (miliseconds > 9) {
+            milisecondsBox.innerText = miliseconds;
+        }
+        if (seconds < 10) {
+            secondsBox.innerText = '0' + seconds;
+        }
+        if (seconds > 9) {
+            secondsBox.innerText = seconds;
+        }
+        if (minutes < 10) {
+            minutesBox.innerText = '0' + minutes;
+        }
+        if (minutes > 9) {
+            minutesBox.innerText = minutes;
+        }
+        if (hours < 10) {
+            hoursBox.innerText = '0' + hours;
+        }
+        if (hours > 9) {
+            hoursBox.innerText = hours;
+        }
+        let Timer = setInterval(10);
+        startButton.onclick = function lengthTime() {
+            if (miliseconds == null) {
+                miliseconds = 0;
+            }
+            if (seconds == null) {
+                seconds = 0;
+            }
+            if (minutes == null) {
+                minutes = 0;
+            }
+            if (hours == null) {
+                hours = 0;
+            }
+            Timer = clearInterval(Timer);
+            Timer = setInterval(lengthTime, 10);
+            if (hours < 1 && minutes < 1 && seconds < 1 && miliseconds < 1) {
+                clearTimeout(Timer);
+                timerEnd.play();
+                miliseconds++
+            }
+            milisecondsBox.innerText = miliseconds;
+            miliseconds--;
+            if (Timer > 1) {
+                startButton.style.display = 'none';
+                disabledBtn.style.display = 'block';
+            }
+            if (miliseconds < 10) {
+                milisecondsBox.innerText = '0' + miliseconds;
+            }
+            if (miliseconds > 9) {
+                milisecondsBox.innerText = miliseconds;
+            }
+            if (miliseconds <= 0 && seconds > 0) {
+                seconds--
+                secondsBox.innerText = seconds;
+                miliseconds = 99;
+                milisecondsBox.innerText = miliseconds;
+            }
+            if (seconds < 10) {
+                secondsBox.innerText = '0' + seconds;
+            }
+            if (seconds > 9) {
+                secondsBox.innerText = seconds;
+            }
+            if (seconds <= 0 && minutes > 0) {
+                minutes--
+                minutesBox.innerText = minutes;
+                seconds = 59;
+                secondsBox.innerText = seconds;
+            }
+            if (minutes < 10) {
+                minutesBox.innerText = '0' + minutes;
+            }
+            if (minutes > 9) {
+                minutesBox.innerText = minutes;
+            }
+            if (minutes <= 0 && hours > 0) {
+                hours--
+                hoursBox.innerText = hours;
+                minutes = 59;
+                minutes.innerText = minutes;
+            }
+            if (hours < 10) {
+                hoursBox.innerText = '0' + hours;
+            }
+            if (hours > 9) {
+                hoursBox.innerText = hours;
+            }
+            clearButton.onclick = function () {
+                clearInterval(Timer);
+                Timer = 0;
+                if (Timer == 0) {
+                    startButton.style.display = 'block';
+                    disabledBtn.style.display = 'none';
+                }
+            }
+        }
+        RestartButton.onclick = function () {
+            timerEnd.pause();
+            milisecondsBox.innerText = '00';
+            secondsBox.innerText = '00';
+            minutesBox.innerText = '00';
+            hoursBox.innerText = '00';
+            clearInterval(Timer);
+            startButton.style.display = 'block';
+            disabledBtn.style.display = 'none';
+            miliseconds = prompt('Enter miliseconds (max-99)');
+            seconds = prompt('Enter seconds (max-59)');
+            minutes = prompt('Enter minutes (max-59)');
+            hours = prompt('Enter hours (max-24)');
+            if (miliseconds == null || miliseconds == '') {
+                miliseconds = 0;
+            }
+            if (seconds == null || seconds == '') {
+                seconds = 0;
+            }
+            if (minutes == null || minutes == '') {
+                minutes = 0;
+            }
+            if (hours == null || hours == '') {
+                hours = 0;
+            }
+            if (miliseconds.length >= 3) {
+                miliseconds = 0;
+            }
+            if (seconds.length >= 3) {
+                seconds = 0;
+            }
+            if (minutes.length >= 3) {
+                minutes = 0;
+            }
+            if (hours.length >= 3) {
+                hours = 0;
+            }
+            if (miliseconds > 99) {
+                miliseconds = '0';
+            }
+            if (seconds > 59) {
+                seconds = '0';
+            }
+            if (minutes > 59) {
+                minutes = '0';
+            }
+            if (hours > 24) {
+                hours = '0';
+            }
+            if (miliseconds < 10) {
+                milisecondsBox.innerText = '0' + miliseconds;
+            }
+            if (miliseconds > 9) {
+                milisecondsBox.innerText = miliseconds;
+            }
+            if (seconds < 10) {
+                secondsBox.innerText = '0' + seconds;
+            }
+            if (seconds > 9) {
+                secondsBox.innerText = seconds;
+            }
+            if (minutes < 10) {
+                minutesBox.innerText = '0' + minutes;
+            }
+            if (minutes > 9) {
+                minutesBox.innerText = minutes;
+            }
+            if (hours < 10) {
+                hoursBox.innerText = '0' + hours;
+            }
+            if (hours > 9) {
+                hoursBox.innerText = hours;
+            }
+        }
+    </script>
+</body>
+
+</html>
